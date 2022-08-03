@@ -20,17 +20,14 @@ public class PlayerController : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-
+    {   
         // Set variables
+        rb = gameObject.GetComponent<Rigidbody2D>();
         moveSpeed = 2f;
         jumpForce = 15f;
         isJumping = false;
         jumpCount = 2;
-
         spawnPoint = transform.position;
-        Money = 0;
     }
 
     // Update is called once per frame
@@ -74,7 +71,7 @@ public class PlayerController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collision)
     {
         // Groundcheck
-        if (collision.gameObject.tag == "Platform")
+        if (collision.gameObject.CompareTag("Platform"))
         {
             isJumping = false;
             // Resets jumpCount
@@ -83,15 +80,14 @@ public class PlayerController : MonoBehaviour
             animator.SetBool("IsJumping", false);
         }
 
-        if (collision.gameObject.tag == "Border")
+        if (collision.gameObject.CompareTag("Border"))
         {
             gameObject.transform.position = spawnPoint;
         }
 
-        if(collision.gameObject.tag == "Currency")
+        if(collision.gameObject.CompareTag("Currency"))
         {
             Destroy(collision.gameObject);
-            Money++;
         }
     }
 
