@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private bool isJumping;
     private float moveHorizontal;
     private bool moveVertical;
+    private bool isFacingRight = true;
 
     public Animator animator;
 
@@ -32,7 +33,7 @@ public class PlayerController : MonoBehaviour
     {
 
         // Check for input
-        moveHorizontal = Input.GetAxis("Horizontal");
+        moveHorizontal = Input.GetAxisRaw("Horizontal");
         moveVertical = Input.GetKeyDown(KeyCode.Space);
         
         // Vertical movement
@@ -47,15 +48,22 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        animator.SetFloat("Speed", Mathf.Abs(moveHorizontal));
-        bool flipped = moveHorizontal < 0;
-        this.transform.rotation = Quaternion.Euler(new Vector3(0f, flipped ? 180f : 0f, 0f));
-
         // Horizontal movement
-        if (moveHorizontal > 0.1f || moveHorizontal < 0.1f)
+        if (moveHorizontal > 0 || moveHorizontal < 0)
         {
             rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
         }
+
+        if (moveHorizontal > 0 && !isFacingRight)
+        {
+            Flip();
+        }
+
+        if (moveHorizontal < 0 && isFacingRight)
+        {
+            Flip();
+        }
+        animator.SetFloat("Speed", Mathf.Abs(moveHorizontal));
     }
 
     void OnTriggerEnter2D(Collider2D collision)
@@ -78,6 +86,15 @@ public class PlayerController : MonoBehaviour
         {
                 isJumping = true;
         }
+    }
+
+    void Flip()
+    {
+        Vector3 currentScale = gameObject.transform.localScale;
+        currentScale.x *= -1;
+        gameObject.transform.localScale = currentScale;
+
+        isFacingRight = !isFacingRight;
     }
 
 }
