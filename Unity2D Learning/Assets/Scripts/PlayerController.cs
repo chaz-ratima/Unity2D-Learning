@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour
     private float moveHorizontal;
     private bool moveVertical;
     private bool isFacingRight = true;
-    private float Money;
     private Vector3 spawnPoint;
 
     public Animator animator;
@@ -94,7 +93,7 @@ public class PlayerController : MonoBehaviour
     void OnTriggerExit2D(Collider2D collision)
     {
         // Ground Exit
-        if (collision.gameObject.tag == "Platform")
+        if (collision.gameObject.CompareTag("Platform"))
         {
                 isJumping = true;
         }
