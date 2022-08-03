@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D rb2D;
+    private Rigidbody2D rb;
 
     private float moveSpeed;
     private float jumpForce;
@@ -13,19 +13,24 @@ public class PlayerController : MonoBehaviour
     private float moveHorizontal;
     private bool moveVertical;
     private bool isFacingRight = true;
+    private float Money;
+    private Vector3 spawnPoint;
 
     public Animator animator;
 
     // Start is called before the first frame update
     void Start()
     {
-        rb2D = gameObject.GetComponent<Rigidbody2D>();
+        rb = gameObject.GetComponent<Rigidbody2D>();
 
         // Set variables
         moveSpeed = 2f;
         jumpForce = 15f;
         isJumping = false;
         jumpCount = 2;
+
+        spawnPoint = transform.position;
+        Money = 0;
     }
 
     // Update is called once per frame
@@ -39,7 +44,7 @@ public class PlayerController : MonoBehaviour
         // Vertical movement
         if (jumpCount != 0 && moveVertical == true)
         {
-            rb2D.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
             // lowers jumpCount by 1 for each "space" jump
             jumpCount--;
             animator.SetBool("IsJumping", true);
@@ -51,7 +56,7 @@ public class PlayerController : MonoBehaviour
         // Horizontal movement
         if (moveHorizontal > 0 || moveHorizontal < 0)
         {
-            rb2D.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
+            rb.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
         }
 
         if (moveHorizontal > 0 && !isFacingRight)
@@ -76,6 +81,17 @@ public class PlayerController : MonoBehaviour
             jumpCount = 2;
 
             animator.SetBool("IsJumping", false);
+        }
+
+        if (collision.gameObject.tag == "Border")
+        {
+            gameObject.transform.position = spawnPoint;
+        }
+
+        if(collision.gameObject.tag == "Currency")
+        {
+            Destroy(collision.gameObject);
+            Money++;
         }
     }
 
