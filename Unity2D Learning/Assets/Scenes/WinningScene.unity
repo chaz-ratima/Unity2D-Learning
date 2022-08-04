@@ -704,7 +704,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1358924988}
           m_TargetAssemblyTypeName: EndGame, Assembly-CSharp
-          m_MethodName: endGame
+          m_MethodName: GameEnd
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

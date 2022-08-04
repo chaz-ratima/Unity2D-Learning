@@ -5,7 +5,7 @@ using UnityEditor;
 
 public class EndGame : MonoBehaviour
 {
-    public void endGame()
+    public void GameEnd()
     {
         //Application.Quit();
         EditorApplication.isPlaying = false;

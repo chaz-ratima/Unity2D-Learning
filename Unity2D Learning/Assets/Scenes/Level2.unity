@@ -3220,7 +3220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58228260e6a2868439022db5cfb1ca5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinManager: {fileID: 487825420}
+  nextScene: {fileID: 487825420}
   text: {fileID: 1006883212}
   coinCount: 10
 --- !u!4 &1704607881

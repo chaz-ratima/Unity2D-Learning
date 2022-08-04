@@ -6,7 +6,7 @@ using TMPro;
 public class CoinManager : MonoBehaviour
 {   
     LoadLevel levelLoader;
-    [SerializeField] GameObject coinManager;
+    [SerializeField] GameObject nextScene;
 
     public static CoinManager instance;
     public TextMeshProUGUI text;
@@ -15,7 +15,7 @@ public class CoinManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {   
-        levelLoader = coinManager.GetComponent<LoadLevel>();
+        levelLoader = nextScene.GetComponent<LoadLevel>();
 
         if(instance == null)
         {
