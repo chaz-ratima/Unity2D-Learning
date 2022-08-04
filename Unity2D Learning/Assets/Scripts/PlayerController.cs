@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     private bool isFacingRight = true;
     private bool canMove;
     private Vector3 spawnPoint;
-    public CoinManager coinManager;
+    //public CoinManager coinManager;
 
     public Animator animator;
     
@@ -24,9 +24,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource deathSoundEffect;
     [SerializeField] private AudioSource RunSoundEffect;
 
+    public Transform feet;
+    public LayerMask Ground;
+
     // Start is called before the first frame update
     void Start()
     {   
+
+
+
         // Set variables
         rb = gameObject.GetComponent<Rigidbody2D>();
         moveSpeed = 2f;
@@ -39,6 +45,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Physics.CheckSphere(feet.position, 2, Ground);
+
 
         // Check for input
         moveHorizontal = Input.GetAxisRaw("Horizontal");
@@ -55,10 +63,16 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        
+    }
+
     void FixedUpdate()
     {   
         // movement paused or resumed depending on coinCount
-        if (coinManager.coinCount > 0)
+        if (CoinManager.instance.coinCount > 0)
         {
             canMove = true;
         }
