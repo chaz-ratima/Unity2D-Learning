@@ -34,7 +34,6 @@ public class PlayerController : MonoBehaviour
         isJumping = false;
         jumpCount = 2;
         spawnPoint = transform.position;
-        canMove = true;
     }
 
     // Update is called once per frame
@@ -54,19 +53,23 @@ public class PlayerController : MonoBehaviour
             jumpCount--;
             animator.SetBool("IsJumping", true);
         }
-        
-
     }
 
     void FixedUpdate()
-    {
-        if (coinManager.coinCount == 0)
+    {   
+        // movement paused or resumed depending on coinCount
+        if (coinManager.coinCount > 0)
+        {
+            canMove = true;
+        }
+        else
         {
             canMove = false;
+            jumpCount = 0;
         }
 
         // Horizontal movement
-        if (canMove == true && moveHorizontal > 0 || moveHorizontal < 0)
+        if (canMove == true && moveHorizontal > 0 || canMove == true && moveHorizontal < 0)
         {
             rb.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
             if (!RunSoundEffect.isPlaying)
@@ -79,8 +82,6 @@ public class PlayerController : MonoBehaviour
         {
             RunSoundEffect.Stop();
         }
-
-        
 
         if (moveHorizontal > 0 && !isFacingRight)
         {

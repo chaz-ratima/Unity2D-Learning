@@ -10,8 +10,11 @@ public class CoinManager : MonoBehaviour
     [SerializeField] private AudioSource winningSoundEffect;
 
     public static CoinManager instance;
-    public TextMeshProUGUI text;
     public int coinCount = 10;
+    int time = 1;
+    int teleport = 4;
+    public TMP_Text _coinTracker;
+    public TMP_Text _tpTimer;
 
     // Start is called before the first frame update
     void Start()
@@ -27,11 +30,33 @@ public class CoinManager : MonoBehaviour
     public void ChangeCoinScore(int coinValue)
     {
         coinCount += coinValue;
-        text.text = "x " + coinCount.ToString();
+        _coinTracker.text = "x " + coinCount.ToString();
         if (coinCount <= 0)
         {
             winningSoundEffect.Play();
-            levelLoader.LoadNextScene();
+            Waiter();
         }
+    }
+
+    IEnumerator Timer()
+    {
+        while (true)
+        {
+            time += 1;
+            teleport --;
+            yield return new WaitForSeconds(1);
+            //Text to appear on screen. Time.
+            _tpTimer.text = "Finishing in " + teleport.ToString();
+            
+            if(time >= 4)
+            {
+                levelLoader.LoadNextScene();
+            }
+        }
+    }
+
+    public void Waiter()
+    {
+        StartCoroutine(Timer());
     }
 }

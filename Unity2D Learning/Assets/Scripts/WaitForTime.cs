@@ -6,16 +6,14 @@ public class WaitForTime : MonoBehaviour
 {
     public int time;
 
-    private void Start()
+    public void Waiter()
     {
-        StartCoroutine(Test());
-
+        StartCoroutine(Timer());
     }
 
-    IEnumerator Test()
+    IEnumerator Timer()
     {
         yield return new WaitForSeconds(time);
         Debug.Log("Wait is over");
-
     }
 }
