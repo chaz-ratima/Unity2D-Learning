@@ -13,9 +13,16 @@ public class PlayerController : MonoBehaviour
     private float moveHorizontal;
     private bool moveVertical;
     private bool isFacingRight = true;
+    private bool canMove;
     private Vector3 spawnPoint;
+    public CoinManager coinManager;
 
     public Animator animator;
+    
+    [SerializeField] private AudioSource PickUpSoundEffect;
+    [SerializeField] private AudioSource jumpSoundEffect;
+    [SerializeField] private AudioSource deathSoundEffect;
+    [SerializeField] private AudioSource RunSoundEffect;
 
     // Start is called before the first frame update
     void Start()
@@ -27,6 +34,7 @@ public class PlayerController : MonoBehaviour
         isJumping = false;
         jumpCount = 2;
         spawnPoint = transform.position;
+        canMove = true;
     }
 
     // Update is called once per frame
@@ -41,19 +49,38 @@ public class PlayerController : MonoBehaviour
         if (jumpCount != 0 && moveVertical == true)
         {
             rb.AddForce(new Vector2(0f, jumpForce), ForceMode2D.Impulse);
+            jumpSoundEffect.Play();
             // lowers jumpCount by 1 for each "space" jump
             jumpCount--;
             animator.SetBool("IsJumping", true);
         }
+        
+
     }
 
     void FixedUpdate()
     {
+        if (coinManager.coinCount == 0)
+        {
+            canMove = false;
+        }
+
         // Horizontal movement
-        if (moveHorizontal > 0 || moveHorizontal < 0)
+        if (canMove == true && moveHorizontal > 0 || moveHorizontal < 0)
         {
             rb.AddForce(new Vector2(moveHorizontal * moveSpeed, 0f), ForceMode2D.Impulse);
+            if (!RunSoundEffect.isPlaying)
+                {
+                    RunSoundEffect.Play();
+                }
+        }           
+
+        if(moveHorizontal == 0 || isJumping == true)
+        {
+            RunSoundEffect.Stop();
         }
+
+        
 
         if (moveHorizontal > 0 && !isFacingRight)
         {
@@ -82,11 +109,13 @@ public class PlayerController : MonoBehaviour
         if (collision.gameObject.CompareTag("Border"))
         {
             gameObject.transform.position = spawnPoint;
+            deathSoundEffect.Play();
         }
 
         if(collision.gameObject.CompareTag("Currency"))
         {
             Destroy(collision.gameObject);
+            PickUpSoundEffect.Play();
         }
     }
 

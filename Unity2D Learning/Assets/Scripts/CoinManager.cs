@@ -7,6 +7,7 @@ public class CoinManager : MonoBehaviour
 {   
     LoadLevel levelLoader;
     [SerializeField] GameObject nextScene;
+    [SerializeField] private AudioSource winningSoundEffect;
 
     public static CoinManager instance;
     public TextMeshProUGUI text;
@@ -29,6 +30,7 @@ public class CoinManager : MonoBehaviour
         text.text = "x " + coinCount.ToString();
         if (coinCount <= 0)
         {
+            winningSoundEffect.Play();
             levelLoader.LoadNextScene();
         }
     }
